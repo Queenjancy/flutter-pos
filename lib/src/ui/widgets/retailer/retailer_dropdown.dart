@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pos/src/ui/shared/ui_helper.dart';
+import 'package:pos/src/ui/builder/space_builder.dart';
 
 class RetailerDropdown extends StatefulWidget {
   @override
@@ -35,7 +35,7 @@ class _RetailerDropdownState extends State<RetailerDropdown> {
             child: Icon(Icons.person_add, color: Colors.green),
           ),
         ),
-        UIHelper.horizontalSpaceSmall(),
+        SpaceBuilder.horizontalSpaceSmall(),
         Expanded(
           child: DropdownButton<String>(
             onChanged: (String newValue) {
@@ -54,7 +54,7 @@ class _RetailerDropdownState extends State<RetailerDropdown> {
             }).toList(),
           ),
         ),
-        UIHelper.horizontalSpaceSmall(),
+        SpaceBuilder.horizontalSpaceSmall(),
         ClearSelectionButton(onPressed: clearSelectedItem),
       ],
     );

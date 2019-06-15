@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos/src/bloc/cashier/cashier.dart';
 import 'package:pos/src/ui/widgets/drawer.dart';
 import 'package:pos/src/ui/widgets/products/product_list.dart';
-import 'package:pos/src/ui/widgets/right_toolbar.dart';
 import 'package:pos/src/ui/widgets/search_bar.dart';
+import 'package:pos/src/ui/widgets/toolbar.dart';
 
 class CashierScreen extends StatefulWidget {
   @override
@@ -39,7 +39,7 @@ class _CashierScreenState extends State<CashierScreen> {
               Expanded(flex: 6, child: _buildProductList()),
               Expanded(
                 flex: 4,
-                child: RightToolbar(),
+                child: Toolbar(),
               ),
             ],
           ),

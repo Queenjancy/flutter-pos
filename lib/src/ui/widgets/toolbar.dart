@@ -1,20 +1,22 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos/src/bloc/cashier/cashier.dart';
 import 'package:pos/src/models/product.dart';
-import 'package:pos/src/ui/shared/ui_helper.dart';
+import 'package:pos/src/ui/builder/button_builder.dart';
+import 'package:pos/src/ui/builder/space_builder.dart';
 import 'package:pos/src/ui/widgets/buttons/cancel_button.dart';
-import 'package:pos/src/ui/widgets/buttons/checkout_button.dart';
 import 'package:pos/src/ui/widgets/buttons/postpone_button.dart';
 import 'package:pos/src/ui/widgets/buttons/print_button.dart';
+import 'package:pos/src/ui/widgets/cashier/checkout_widget.dart';
 import 'package:pos/src/ui/widgets/products/product_add_button.dart';
 import 'package:pos/src/ui/widgets/products/product_table.dart';
 import 'package:pos/src/ui/widgets/retailer/retailer_dropdown.dart';
 import 'package:pos/src/utils/formatter/currency.dart';
 
-class RightToolbar extends StatelessWidget {
+class Toolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,27 +24,28 @@ class RightToolbar extends StatelessWidget {
       padding: EdgeInsets.all(10.0),
       child: Column(
         children: <Widget>[
-          Top(),
-          Expanded(flex: 1, child: Bottom()),
+          ToolbarTopSection(),
+          Expanded(flex: 1, child: ToolbarBottom()),
         ],
       ),
     );
   }
 }
 
-class Top extends StatefulWidget {
+class ToolbarTopSection extends StatefulWidget {
   @override
-  _TopState createState() => _TopState();
+  _ToolbarTopSectionState createState() => _ToolbarTopSectionState();
 }
 
-class _TopState extends State<Top> {
+class _ToolbarTopSectionState extends State<ToolbarTopSection> {
   CashierBloc _cashierBloc;
+  // OverlayState _overlayState;
+  OverlayEntry _overlayEntry;
 
   @override
   void initState() {
-    _cashierBloc ??= BlocProvider.of<CashierBloc>(context);
-
     super.initState();
+    _cashierBloc ??= BlocProvider.of<CashierBloc>(context);
   }
 
   @override
@@ -53,8 +56,8 @@ class _TopState extends State<Top> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
               children: <Widget>[
                 ProductAddButton(
                   onPressed: () {
@@ -69,18 +72,18 @@ class _TopState extends State<Top> {
                     );
                   },
                 ),
-                UIHelper.horizontalSpaceSmall(),
+                SpaceBuilder.horizontalSpaceSmall(),
                 PrintButton(onPressed: () {}),
-                UIHelper.horizontalSpaceSmall(),
+                SpaceBuilder.horizontalSpaceSmall(),
                 PostponeButton(onPressed: () {}),
-                UIHelper.horizontalSpaceSmall(),
+                SpaceBuilder.horizontalSpaceSmall(),
                 CancelButton(onPressed: () {}),
               ],
             ),
           ),
-          UIHelper.verticalSpaceMedium(),
+          SpaceBuilder.verticalSpaceMedium(),
           RetailerDropdown(),
-          UIHelper.verticalSpaceMedium(),
+          SpaceBuilder.verticalSpaceMedium(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -97,7 +100,7 @@ class _TopState extends State<Top> {
               ),
             ],
           ),
-          UIHelper.verticalSpaceSmall(),
+          SpaceBuilder.verticalSpaceSmall(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -110,21 +113,50 @@ class _TopState extends State<Top> {
             bloc: _cashierBloc,
             builder: (BuildContext context, CashierState state) {
               if (state is CashierIdle) {
-                return CheckoutButton(
-                  total: state.totalPrice,
-                  onPressed: () {},
+                return ButtonBuilder(context).checkoutButton(
+                  total: toRupiah(state.totalPrice),
+                  onPressed: () {
+                    _overlayEntry =
+                        _createCheckoutOverlayEntry(state.totalPrice);
+                    Overlay.of(context).insert(_overlayEntry);
+                  },
                 );
               }
-              return CheckoutButton(total: 0);
+              return ButtonBuilder(context).checkoutButton(total: toRupiah(0));
             },
           )
         ],
       ),
     );
   }
+
+  OverlayEntry _createCheckoutOverlayEntry(int totalPrice) {
+    // RenderBox renderBox = context.findRenderObject();
+    // Size size = renderBox.size;
+    // Offset offset = renderBox.localToGlobal(Offset.zero);
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return OverlayEntry(
+      opaque: false,
+      builder: (context) => Positioned(
+            left: screenWidth * 0.1,
+            right: screenWidth * 0.1,
+            top: screenHeight * 0.1,
+            bottom: screenHeight * 0.1,
+            child: CheckoutWidget(
+              totalPrice,
+              onCancelPressed: () {
+                _overlayEntry?.remove();
+              },
+            ),
+          ),
+    );
+  }
 }
 
-class Bottom extends StatelessWidget {
+class ToolbarBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -137,21 +169,21 @@ class Bottom extends StatelessWidget {
               Expanded(flex: 3, child: Text('089512345')),
             ],
           ),
-          UIHelper.verticalSpaceSmall(),
+          SpaceBuilder.verticalSpaceSmall(),
           Row(
             children: <Widget>[
               Expanded(flex: 1, child: Text('Name')),
               Expanded(flex: 3, child: Text('Chitato 68G')),
             ],
           ),
-          UIHelper.verticalSpaceSmall(),
+          SpaceBuilder.verticalSpaceSmall(),
           Row(
             children: <Widget>[
               Expanded(flex: 1, child: Text('Kategori')),
               Expanded(flex: 3, child: Text('Snack')),
             ],
           ),
-          UIHelper.verticalSpaceMedium(),
+          SpaceBuilder.verticalSpaceMedium(),
           ProductTable(),
         ],
       ),

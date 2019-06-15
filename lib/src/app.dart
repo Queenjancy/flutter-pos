@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pos/src/bloc/cashier/cashier_bloc.dart';
 import 'package:pos/src/ui/router.dart';
-import 'package:pos/src/ui/themes/light_theme.dart';
+import 'package:pos/src/ui/themes/default_theme.dart';
 
 class App extends StatefulWidget {
   @override
@@ -33,7 +33,7 @@ class _AppState extends State<App> {
       ],
       child: MaterialApp(
         initialRoute: '/',
-        theme: lightTheme(),
+        theme: defaultTheme(),
         onGenerateRoute: Router.generateRoute,
       ),
     );

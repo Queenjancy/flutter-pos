@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pos/src/models/product.dart';
-import 'package:pos/src/ui/shared/ui_helper.dart';
+import 'package:pos/src/ui/builder/space_builder.dart';
 import 'package:pos/src/ui/widgets/products/product_item.dart';
 
 class ProductList extends StatelessWidget {
@@ -40,7 +40,7 @@ class ProductListHeader extends StatelessWidget {
             child: Text(('No').toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ),
-          UIHelper.horizontalSpaceSmall(),
+          SpaceBuilder.horizontalSpaceSmall(),
           Expanded(
               flex: 6,
               child: Text(
@@ -48,7 +48,7 @@ class ProductListHeader extends StatelessWidget {
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.bold),
               )),
-          UIHelper.horizontalSpaceSmall(),
+          SpaceBuilder.horizontalSpaceSmall(),
           Expanded(
               flex: 2,
               child: Text(
@@ -56,7 +56,7 @@ class ProductListHeader extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold),
               )),
-          UIHelper.horizontalSpaceSmall(),
+          SpaceBuilder.horizontalSpaceSmall(),
           Container(
             width: 105,
             child: Text(
@@ -65,7 +65,7 @@ class ProductListHeader extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          UIHelper.horizontalSpaceSmall(),
+          SpaceBuilder.horizontalSpaceSmall(),
           Expanded(
               flex: 1,
               child: Text(
@@ -73,7 +73,7 @@ class ProductListHeader extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold),
               )),
-          UIHelper.horizontalSpaceSmall(),
+          SpaceBuilder.horizontalSpaceSmall(),
           Expanded(
               flex: 2,
               child: Text(

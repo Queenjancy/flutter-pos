@@ -60,6 +60,13 @@ class UpdateQty extends CashierEvent {
   }
 }
 
+class Checkout extends CashierEvent {
+  @override
+  String toString() {
+    return "Checkout";
+  }
+}
+
 class PrintReceipt extends CashierEvent {
   @override
   String toString() {
@@ -81,9 +88,4 @@ class CancelTransaction extends CashierEvent {
   }
 }
 
-class FinishTransaction extends CashierEvent {
-  @override
-  String toString() {
-    return "FinishTransaction";
-  }
-}
+

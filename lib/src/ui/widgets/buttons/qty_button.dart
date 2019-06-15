@@ -23,23 +23,40 @@ class _QtyButtonState extends State<QtyButton> {
 
   @override
   void initState() {
+    super.initState();
     _qtyFocus.addListener(() {
       if (_qtyFocus.hasFocus) {
         selectAll();
       }
     });
-    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(QtyButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _qtyController.text = widget.qty.toString();
+    _qtyController.selection = TextSelection(
+      baseOffset: widget.qty.toString().length,
+      extentOffset: _qtyController.text.length,
+    );
   }
 
   void selectAll() {
-    _qtyController.selection =
-        TextSelection(baseOffset: 0, extentOffset: _qtyController.text.length);
+    _qtyController.selection = TextSelection(
+      baseOffset: 0,
+      extentOffset: widget.qty.toString().length,
+    );
+  }
+
+  @override
+  void dispose() {
+    _qtyController.dispose();
+    _qtyFocus.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _qtyController.text = widget.qty.toString();
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -47,9 +64,10 @@ class _QtyButtonState extends State<QtyButton> {
         SizedBox(
           width: 55.0,
           child: TextField(
-            onChanged: widget.onChanged,
-            controller: _qtyController,
+            // onTap: selectAll,
             focusNode: _qtyFocus,
+            controller: _qtyController,
+            onChanged: widget.onChanged,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
@@ -68,13 +86,17 @@ class _QtyButtonState extends State<QtyButton> {
       width: 30.0,
       height: 30.0,
       child: FlatButton(
+        onPressed: (widget.qty <= 1) ? null : () {
+          widget.onDecrement();
+          _qtyFocus.unfocus();
+        },
         padding: EdgeInsets.all(0.0),
         color: Theme.of(context).primaryColor,
+        disabledColor: Colors.grey[300],
         child: Icon(
           Icons.remove,
           color: Colors.white,
         ),
-        onPressed: widget.onDecrement,
       ),
     );
   }
@@ -84,9 +106,14 @@ class _QtyButtonState extends State<QtyButton> {
       width: 30.0,
       height: 30.0,
       child: FlatButton(
-        onPressed: widget.onIncrement,
+        onPressed: () {
+          widget.onIncrement();
+          _qtyController.clear();
+          _qtyFocus.unfocus();
+        },
         padding: EdgeInsets.all(0.0),
         color: Theme.of(context).primaryColor,
+        disabledColor: Colors.grey[300],
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.5)),
         child: Icon(
           Icons.add,

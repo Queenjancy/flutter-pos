@@ -25,6 +25,8 @@ class CashierBloc extends Bloc<CashierEvent, CashierState> {
       yield* _mapDecrementQtyToState(event);
     } else if (event is UpdateQty) {
       yield* _mapUpdateQtyToState(event);
+    } else if (event is Checkout) {
+      yield* _mapCheckoutToState(event);
     }
   }
 
@@ -99,5 +101,9 @@ class CashierBloc extends Bloc<CashierEvent, CashierState> {
         totalPrice: _cashierService.calculateTotalTransaction(products),
       );
     }
+  }
+
+  Stream<CashierState> _mapCheckoutToState(Checkout event) async* {
+    if (currentState is CashierIdle) {}
   }
 }

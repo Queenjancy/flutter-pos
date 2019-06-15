@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pos/src/ui/shared/table_builder.dart';
+import 'package:pos/src/ui/builder/table_builder.dart';
 import 'package:pos/src/ui/widgets/buttons/qty_button.dart';
 
 class ProductTable extends StatelessWidget {

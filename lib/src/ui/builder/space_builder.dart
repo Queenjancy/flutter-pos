@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Contains useful functions to reduce boilerplate code
-class UIHelper {
+class SpaceBuilder {
   // Vertical spacing constants. Adjust to your liking.
   static const double _VerticalSpaceSmall = 10.0;
   static const double _VerticalSpaceMedium = 20.0;
